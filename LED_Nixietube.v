@@ -1,5 +1,7 @@
 module LED_Nixietube(Sys_CLK,EN,COM,SEG,Key_Out);
 
+//------通过Key_Detection获取按键输入，用门级电路控制每一个LED数码管------
+
 input Sys_CLK;
 input EN;
 input [1:0]Key_Out;
