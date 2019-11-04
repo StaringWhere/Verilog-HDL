@@ -1,25 +1,26 @@
-module LED_Nixietube(Sys_CLK,Data_Bin,EN,COM,SEG);
+module LED_Nixietube(Sys_CLK,Data_Bin,EN,COM,SEG,LED);
 
 input Sys_CLK;
 input EN;
 input [11:0]Data_Bin;
+input [3:0]LED;
 output [1:0]COM;
 output [7:0]SEG;
 
 wire [7:0]Num_Display;
-//wire [19:0]Num_BCD;
-//wire [15:0]Num_Bin;
+wire [19:0]Num_BCD;
+wire [15:0]Num_Bin;
 
 reg [7:0]SEG;
 reg COM_Cnt;
+reg Key_Signal;
 
 reg Div_CLK;
 reg [12:0]Div_Cnt;
 
-//assign Num_Bin = {4'b0,Data_Bin};
+assign Num_Bin = {4'b0,Data_Bin};
 assign Num_Display = Data_Bin[11:4];
 
-//BinToBCD BinToBCD(.Data_Bin(Num_Bin),.Data_BCD(Num_BCD),.Sys_CLK(Sys_CLK));
 
 parameter Display_0 = 8'b11111100;
 parameter Display_1 = 8'b01100000;
@@ -31,6 +32,14 @@ parameter Display_6 = 8'b10111110;
 parameter Display_7 = 8'b11100000;
 parameter Display_8 = 8'b11111110;
 parameter Display_9 = 8'b11110110;
+
+parameter Display_a = 8'b11101110;
+parameter Display_b = 8'b00111110;
+parameter Display_c = 8'b10011100;
+parameter Display_d = 8'b01111010;
+parameter Display_e = 8'b10011110;
+parameter Display_f = 8'b10001110;
+
 parameter Display_DP = 8'b00000001;
 
 assign COM = (EN)?((COM_Cnt)?2'b10:2'b01):2'b00;
@@ -58,38 +67,49 @@ always@(posedge Div_CLK)
 begin
 	if(EN)
 	begin
-		if(COM_Cnt)
-		begin
-			case(Num_Display[7:4])
-				4'h0:SEG <= Display_0+1'b1;
-				4'h1:SEG <= Display_1+1'b1;
-				4'h2:SEG <= Display_2+1'b1;
-				4'h3:SEG <= Display_3+1'b1;
-				4'h4:SEG <= Display_4+1'b1;
-				4'h5:SEG <= Display_5+1'b1;
-				4'h6:SEG <= Display_6+1'b1;
-				4'h7:SEG <= Display_7+1'b1;
-				4'h8:SEG <= Display_8+1'b1;
-				4'h9:SEG <= Display_9+1'b1;
-				default:SEG <= 4'h0;
-			endcase
-		end
+		if(COM_Cnt) //¸ßÎ»
+			begin
+				case(LED)
+					4'b0000:SEG <= Display_0+1'b1;
+					4'b0001:SEG <= Display_1+1'b1;
+					4'b0010:SEG <= Display_2+1'b1;
+					4'b0011:SEG <= Display_3+1'b1;
+					4'b0100:SEG <= Display_4+1'b1;
+					4'b0101:SEG <= Display_5+1'b1;
+					4'b0110:SEG <= Display_6+1'b1;
+					4'b0111:SEG <= Display_7+1'b1;
+					4'b1000:SEG <= Display_8+1'b1;
+					4'b1001:SEG <= Display_9+1'b1;
+					4'b1010:SEG <= Display_a+1'b1;
+					4'b1011:SEG <= Display_b+1'b1;
+					4'b1100:SEG <= Display_c+1'b1;
+					4'b1101:SEG <= Display_d+1'b1;
+					4'b1110:SEG <= Display_e+1'b1;
+					4'b1111:SEG <= Display_f+1'b1;
+					default:SEG <= 4'h0;
+				endcase
+			end
 		else
-		begin
-			case(Num_Display[3:0])
-				4'h0:SEG <= Display_0;
-				4'h1:SEG <= Display_1;
-				4'h2:SEG <= Display_2;
-				4'h3:SEG <= Display_3;
-				4'h4:SEG <= Display_4;
-				4'h5:SEG <= Display_5;
-				4'h6:SEG <= Display_6;
-				4'h7:SEG <= Display_7;
-				4'h8:SEG <= Display_8;
-				4'h9:SEG <= Display_9;
-				default:SEG <= 4'h0;
-			endcase
-		end
+			begin
+				case(LED)
+					4'b0000:SEG <= Display_0;
+					4'b0001:SEG <= Display_1;
+					4'b0010:SEG <= Display_2;
+					4'b0011:SEG <= Display_3;
+					4'b0100:SEG <= Display_4;
+					4'b0101:SEG <= Display_5;
+					4'b0110:SEG <= Display_6;
+					4'b0111:SEG <= Display_7;
+					4'b1000:SEG <= Display_8;
+					4'b1001:SEG <= Display_9;
+					4'b1010:SEG <= Display_a;
+					4'b1011:SEG <= Display_b;
+					4'b1100:SEG <= Display_c;
+					4'b1101:SEG <= Display_d;
+					4'b1110:SEG <= Display_e;
+					4'b1111:SEG <= Display_f;
+				endcase
+			end
 		COM_Cnt = COM_Cnt + 1'b1;
 	end
 	else 

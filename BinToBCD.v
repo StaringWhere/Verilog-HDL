@@ -1,8 +1,10 @@
+//------输入二进制码[15:0]Data_Bin，输出BCD码[19:0]Data_BCD------
+
 module BinToBCD(Data_Bin,Data_BCD,Sys_CLK);  // N/A not been igorned -- 20180824 noted
 
 input Sys_CLK;					//系统时钟输入
 input [15:0]Data_Bin;			//二进制码输入
-output [19:0]Data_BCD;			//8421BCD码输出
+output [19:0]Data_BCD;			//8421BCD码输凊
 wire [3:0]Hex[3:0];
 
 reg [18:0]HexD;
@@ -100,7 +102,8 @@ function [5:0]AddBCD;
 input [3:0]add1,add2,add3,add4;
 begin
     AddBCD = add1 + add2 + add3 + add4;
-    if(AddBCD > 6'h1d)               //>29 最低有一个可能出珸f,但由二进制转换而来的数在这里不会出现大亰的情冊        AddBCD = AddBCD + 5'h12;
+    if(AddBCD > 6'h1d)               //>29 最低有一个可能出珸f,但由二进制转换而来的数在这里不会出现大亰的情冊        
+		AddBCD = AddBCD + 5'h12;
     else if(AddBCD > 5'h13)          //>19对结果加12
         AddBCD = AddBCD + 4'hc;
     else if(AddBCD > 4'h9)           //>9对结果加6

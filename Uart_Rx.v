@@ -1,12 +1,12 @@
 module Uart_Rx(CLK,RST,Signal_Rx,Data_Rx,Rdsig,DataError_Flag,FrameError_Flag);
 
-input CLK;             //é‡‡æ ·æ—¶é’Ÿ
-input RST;           //å¤ä½ä¿¡å·
-input Signal_Rx;              //UARTæ•°æ®è¾“å…¥
-output Data_Rx;        //æ¥æ”¶æ•°æ®è¾“å‡º
+input CLK;             //²ÉÑùÊ±ÖÓ
+input RST;           //¸´Î»ĞÅºÅ
+input Signal_Rx;              //UARTÊı¾İÊäÈë
+output Data_Rx;        //½ÓÊÕÊı¾İÊä³ö
 output Rdsig;
-output DataError_Flag;      //æ•°æ®å‡ºé”™æŒ‡ç¤º
-output FrameError_Flag;     //å¸§å‡ºé”™æŒ‡ç¤º
+output DataError_Flag;      //Êı¾İ³ö´íÖ¸Ê¾
+output FrameError_Flag;     //Ö¡³ö´íÖ¸Ê¾
 
 reg [7:0]Data_Rx;
 reg Rdsig;
@@ -24,25 +24,25 @@ reg Presult;
 reg Idle;
 parameter paritymode = 1'b0;
 
-always@(posedge CLK)   //æ£€æµ‹çº¿è·¯çš„ä¸‹é™æ²¿
+always@(posedge CLK)   //¼ì²âÏßÂ·µÄÏÂ½µÑØ
 begin
 	RxBuf <= Signal_Rx;
 	RxFall <= RxBuf & (~Signal_Rx);
 end
 
 ////////////////////////////////////////////////////////////////
-//å¯åŠ¨ä¸²å£æ¥æ”¶ç¨‹åº
+//Æô¶¯´®¿Ú½ÓÊÕ³ÌĞò
 ////////////////////////////////////////////////////////////////
 always@(posedge CLK)
 begin
-	if (RxFall && (~Idle))	//æ£€æµ‹åˆ°çº¿è·¯çš„ä¸‹é™æ²¿å¹¶ä¸”åŸå…ˆçº¿è·¯ä¸ºç©ºé—²ï¼Œå¯åŠ¨æ¥æ”¶æ•°æ®è¿›ç¨‹  
+	if (RxFall && (~Idle))	//¼ì²âµ½ÏßÂ·µÄÏÂ½µÑØ²¢ÇÒÔ­ÏÈÏßÂ·Îª¿ÕÏĞ£¬Æô¶¯½ÓÊÕÊı¾İ½ø³Ì  
 		Recieve <= 1'b1;
-	else if(cnt == 8'd168)  //æ¥æ”¶æ•°æ®å®Œæˆ
+	else if(cnt == 8'd168)  //½ÓÊÕÊı¾İÍê³É
 		Recieve <= 1'b0;
 end
 
 ////////////////////////////////////////////////////////////////
-//ä¸²å£æ¥æ”¶ç¨‹åº, 16ä¸ªæ—¶é’Ÿæ¥æ”¶ä¸€ä¸ªbit
+//´®¿Ú½ÓÊÕ³ÌĞò, 16¸öÊ±ÖÓ½ÓÊÕÒ»¸öbit
 ////////////////////////////////////////////////////////////////
 always@(posedge CLK or negedge RST)
 begin
@@ -63,68 +63,68 @@ begin
 				cnt <= cnt + 8'd1;
 				Rdsig <= 1'b0;
 			end
-			8'd24:begin                 //æ¥æ”¶ç¬¬0ä½æ•°æ®
+			8'd24:begin                 //½ÓÊÕµÚ0Î»Êı¾İ
 				Idle <= 1'b1;
 				Data_Rx[0] <= Signal_Rx;
 				Presult <= paritymode^Signal_Rx;
 				cnt <= cnt + 8'd1;
 				Rdsig <= 1'b0;
 			end
-			8'd40:begin                 //æ¥æ”¶ç¬¬1ä½æ•°æ®  
+			8'd40:begin                 //½ÓÊÕµÚ1Î»Êı¾İ  
 				Idle <= 1'b1;
 				Data_Rx[1] <= Signal_Rx;
 				Presult <= Presult^Signal_Rx;
 				cnt <= cnt + 8'd1;
 				Rdsig <= 1'b0;
 			end
-			8'd56:begin                 //æ¥æ”¶ç¬¬2ä½æ•°æ®   
+			8'd56:begin                 //½ÓÊÕµÚ2Î»Êı¾İ   
 				Idle <= 1'b1;
 				Data_Rx[2] <= Signal_Rx;
 				Presult <= Presult^Signal_Rx;
 				cnt <= cnt + 8'd1;
 				Rdsig <= 1'b0;
 			end
-			8'd72:begin               //æ¥æ”¶ç¬¬3ä½æ•°æ®   
+			8'd72:begin               //½ÓÊÕµÚ3Î»Êı¾İ   
 				Idle <= 1'b1;
 				Data_Rx[3] <= Signal_Rx;
 				Presult <= Presult^Signal_Rx;
 				cnt <= cnt + 8'd1;
 				Rdsig <= 1'b0;
 			end
-			8'd88:begin               //æ¥æ”¶ç¬¬4ä½æ•°æ®    
+			8'd88:begin               //½ÓÊÕµÚ4Î»Êı¾İ    
 				Idle <= 1'b1;
 				Data_Rx[4] <= Signal_Rx;
 				Presult <= Presult^Signal_Rx;
 				cnt <= cnt + 8'd1;
 				Rdsig <= 1'b0;
 			end
-			8'd104:begin            //æ¥æ”¶ç¬¬5ä½æ•°æ®    
+			8'd104:begin            //½ÓÊÕµÚ5Î»Êı¾İ    
 				Idle <= 1'b1;
 				Data_Rx[5] <= Signal_Rx;
 				Presult <= Presult^Signal_Rx;
 				cnt <= cnt + 8'd1;
 				Rdsig <= 1'b0;
 			end
-			8'd120:begin            //æ¥æ”¶ç¬¬6ä½æ•°æ®    
+			8'd120:begin            //½ÓÊÕµÚ6Î»Êı¾İ    
 				Idle <= 1'b1;
 				Data_Rx[6] <= Signal_Rx;
 				Presult <= Presult^Signal_Rx;
 				cnt <= cnt + 8'd1;
 				Rdsig <= 1'b0;
 			end
-			8'd136:begin            //æ¥æ”¶ç¬¬7ä½æ•°æ®   
+			8'd136:begin            //½ÓÊÕµÚ7Î»Êı¾İ   
 				Idle <= 1'b1;
 				Data_Rx[7] <= Signal_Rx;
 				Presult <= Presult^Signal_Rx;
 				cnt <= cnt + 8'd1;
 				Rdsig <= 1'b1;
 			end
-			8'd152:begin            //æ¥æ”¶å¥‡å¶æ ¡éªŒä½    
+			8'd152:begin            //½ÓÊÕÆæÅ¼Ğ£ÑéÎ»    
 				Idle <= 1'b1;
 				if(Presult == Signal_Rx)
 					DataError_Flag <= 1'b0;
 				else
-					DataError_Flag <= 1'b1;       //å¦‚æœå¥‡å¶æ ¡éªŒä½ä¸å¯¹ï¼Œè¡¨ç¤ºæ•°æ®å‡ºé”™
+					DataError_Flag <= 1'b1;       //Èç¹ûÆæÅ¼Ğ£ÑéÎ»²»¶Ô£¬±íÊ¾Êı¾İ³ö´í
 				cnt <= cnt + 8'd1;
 				Rdsig <= 1'b1;
 			end
@@ -133,7 +133,7 @@ begin
 				if(1'b1 == Signal_Rx)
 					FrameError_Flag <= 1'b0;
 				else
-					FrameError_Flag <= 1'b1;      //å¦‚æœæ²¡æœ‰æ¥æ”¶åˆ°åœæ­¢ä½ï¼Œè¡¨ç¤ºå¸§å‡ºé”™
+					FrameError_Flag <= 1'b1;      //Èç¹ûÃ»ÓĞ½ÓÊÕµ½Í£Ö¹Î»£¬±íÊ¾Ö¡³ö´í
 				cnt <= cnt + 8'd1;
 				Rdsig <= 1'b1;
 			end

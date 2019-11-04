@@ -48,7 +48,6 @@ begin
 		Num = 11'b0;
 end*/
 
-LED_Nixietube LED_Nixietube(.Sys_CLK(Sys_CLK),.Data_Bin(AD_BCDOut),.EN(1'b1),.COM(COM),.SEG(SEG));
 
 /*
 assign LED[0] = (Switch == 2'b00)?1'b1:1'b0;
@@ -60,10 +59,16 @@ assign LED[3] = (Switch == 2'b11)?1'b1:1'b0;	*/
 //wire Uart_Idle_Flag;
 
 //assign LED = AD_Address;
+
+//BinToBCD BinToBCD(.Data_Bin(Data_Bin),.Data_BCD(Data_BCD),.Sys_CLK(Sys_CLK));
+
+LED_Nixietube LED_Nixietube(.Sys_CLK(Sys_CLK),.Data_Bin(AD_BCDOut),.EN(1'b1),.COM(COM),.SEG(SEG),.LED(LED));
+
 Red_LED Red_LED(.LED(LED),.Sys_CLK(Sys_CLK),.Sys_RST(Sys_RST),.Key_In(Key));
 
 AD_Top AD_Top(.CLK(Sys_CLK),.SCLK(AD_SCLK),.CS(AD_CS),.SDO(AD_SDI),.SDI(AD_SDO),.AD_BCDOut(AD_BCDOut),.AD_Address(AD_Address),.Switch(Switch));
 
 Uart_Top Uart_Top(.Sys_CLK(Sys_CLK),.Sys_RST(Sys_RST),.Signal_Tx(Uart_Tx),.Signal_Rx(Uart_Rx));
+
 
 endmodule
