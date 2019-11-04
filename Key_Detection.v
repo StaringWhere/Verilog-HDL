@@ -1,6 +1,6 @@
 //------连续检测12次及以上Key_In[x]=1，则Key_Out=1，即连续按键大于12ms，即可被检测到------
 
-module Key(Sys_CLK,Key_In,Key_Out);
+module Key_Detection(Sys_CLK,Key_In,Key_Out);
 
 input Sys_CLK;
 input [1:0]Key_In;

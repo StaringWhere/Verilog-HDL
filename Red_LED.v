@@ -1,13 +1,9 @@
-module Red_LED(LED,Sys_CLK,Sys_RST,Key_In);
+module Red_LED(LED,Sys_CLK,Sys_RST,Key_Out);
 
 input Sys_CLK;
 input Sys_RST;
-input [1:0]Key_In;
+input [1:0]Key_Out;
 output [3:0]LED;
-
-wire [1:0]Key_Out;
-
-Key Key(.Sys_CLK(Sys_CLK),.Key_In(Key_In),.Key_Out(Key_Out));
 
 reg Key_Signal;
 reg [3:0]LED;
