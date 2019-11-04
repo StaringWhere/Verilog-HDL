@@ -1,8 +1,9 @@
-module LED_Nixietube(Sys_CLK,EN,COM,SEG,Key_Out);
+module LED_Nixietube(Sys_CLK,Sys_RST,EN,COM,SEG,Key_Out);
 
-//------通过Key_Detection获取按键输入，用门级电路控制每一个LED数码管------
+//------通过Key_Detection获取按键输入，用门级电路控制每一个LED数码管，RESET清零------
 
 input Sys_CLK;
+input Sys_RST;
 input EN;
 input [1:0]Key_Out;
 output [1:0]COM;
@@ -62,14 +63,19 @@ end
 always@(posedge Sys_CLK)
 	Key_Signal = |Key_Out;
 
-always@(posedge Key_Signal)
+always@(posedge Key_Signal or negedge Sys_RST)
 begin
-	if(Key_Out == 2'b10)
-		Num_Display <= Num_Display + 1'b1;
-	else if (Key_Out == 2'b01)
-		Num_Display <= Num_Display - 1'b1;
+	if(!Sys_RST)
+		Num_Display <= 8'b0;
 	else
-		Num_Display <= Num_Display;
+		begin
+			if(Key_Out == 2'b10)
+				Num_Display <= Num_Display + 1'b1;
+			else if (Key_Out == 2'b01)
+				Num_Display <= Num_Display - 1'b1;
+			else
+				Num_Display <= Num_Display;
+		end
 end
 
 always@(posedge Sys_CLK)

@@ -26,6 +26,7 @@ module LED_Nixietube_test;
 
 	// Inputs
 	reg Sys_CLK;
+	reg Sys_RST;
 	reg EN;
 	reg [1:0] Key_Out;
 
@@ -36,6 +37,7 @@ module LED_Nixietube_test;
 	// Instantiate the Unit Under Test (UUT)
 	LED_Nixietube uut (
 		.Sys_CLK(Sys_CLK), 
+		.Sys_RST(Sys_RST), 
 		.EN(EN), 
 		.COM(COM), 
 		.SEG(SEG), 
@@ -48,6 +50,7 @@ module LED_Nixietube_test;
 	initial begin
 		// Initialize Inputs
 		Sys_CLK = 0;
+		Sys_RST = 1;
 		EN = 1;
 		Key_Out = 0;
 

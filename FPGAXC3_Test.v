@@ -65,7 +65,7 @@ assign LED[3] = (Switch == 2'b11)?1'b1:1'b0;	*/
 
 Key_Detection Key_Detection(.Sys_CLK(Sys_CLK),.Key_In(Key),.Key_Out(Key_Out));
 
-LED_Nixietube LED_Nixietube(.Sys_CLK(Sys_CLK),.EN(1'b1),.COM(COM),.SEG(SEG),.Key_Out(Key_Out));
+LED_Nixietube LED_Nixietube(.Sys_CLK(Sys_CLK),.Sys_RST(Sys_RST),.EN(1'b1),.COM(COM),.SEG(SEG),.Key_Out(Key_Out));
 
 Red_LED Red_LED(.LED(LED),.Sys_CLK(Sys_CLK),.Sys_RST(Sys_RST),.Key_Out(Key_Out));
 
